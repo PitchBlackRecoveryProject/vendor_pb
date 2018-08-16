@@ -240,10 +240,10 @@ endif
 ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
     ifneq ($(TARGET_KERNEL_CLANG_VERSION),)
         # Find the clang-* directory containing the specified version
-        KERNEL_CLANG_VERSION := $(shell find $(ANDROID_BUILD_TOP)/prebuilts/clang/host/$(HOST_OS)-x86/ -name AndroidVersion.txt -exec grep -l $(TARGET_KERNEL_CLANG_VERSION) "{}" \; | sed -e 's|/AndroidVersion.txt$$||g;s|^.*/||g')
+        KERNEL_CLANG_VERSION := $(shell find ./prebuilts/clang/host/$(HOST_OS)-x86/ -name AndroidVersion.txt -exec grep -l $(TARGET_KERNEL_CLANG_VERSION) "{}" \; | sed -e 's|/AndroidVersion.txt$$||g;s|^.*/||g')
     else
         # Only set the latest version of clang if TARGET_KERNEL_CLANG_VERSION hasn't been set by the device config
-        KERNEL_CLANG_VERSION := $(shell ls -d $(ANDROID_BUILD_TOP)/prebuilts/clang/host/$(HOST_OS)-x86/clang-* | xargs -n 1 basename | tail -1)
+        KERNEL_CLANG_VERSION := $(shell ls -d ./prebuilts/clang/host/$(HOST_OS)-x86/clang-* | xargs -n 1 basename | tail -1)
     endif
     ifneq ($(TARGET_KERNEL_CLANG_PATH),)
         TARGET_KERNEL_CLANG_PATH := $(BUILD_TOP)/$(TARGET_KERNEL_CLANG_PATH)/bin
@@ -264,7 +264,7 @@ ifneq ($(USE_CCACHE),)
     ccache := $(shell which ccache)
 
     ifeq ($(ccache),)
-        ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
+        ccache := ./prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
         # Check that the executable is here.
         ccache := $(strip $(wildcard $(ccache)))
     endif
@@ -287,7 +287,7 @@ endif
 ccache =
 
 ifeq ($(HOST_OS),darwin)
-  MAKE_FLAGS += C_INCLUDE_PATH=$(ANDROID_BUILD_TOP)/external/elfutils/libelf:/usr/local/opt/openssl/include
+  MAKE_FLAGS += C_INCLUDE_PATH=./external/elfutils/libelf:/usr/local/opt/openssl/include
   MAKE_FLAGS += LIBRARY_PATH=/usr/local/opt/openssl/lib
 endif
 
