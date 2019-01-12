@@ -157,6 +157,7 @@ fi
 #COMMAND=""
 
 AB_D() {
+ ui_print "Doing Work on slot $1"
  #Dump & unpack & Cp
  tool="/tmp/pb/magiskboot"
  # dd if=/dev/block/bootdevice/by-name/$1 "of=/tmp/boot.img"
@@ -166,7 +167,6 @@ AB_D() {
  "$tool" --unpack boot.img
  cp -f $RAM ramdisk.cpio
  "$tool" --repack boot.img
- "$tool" --hexpatch new-boot.img 736B69705F6F76657272696465 20202020202020202020202020
  dd if=new-boot.img of=/dev/block/bootdevice/by-name/$1
  [ $? = 0 ] || abort "Failed to flash $1 Image Please Restore the Boot.img"
  cd /tmp/pb
