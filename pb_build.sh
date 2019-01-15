@@ -26,13 +26,13 @@ nocol='\033[0m'
 purple='\e[0;35m'
 white='\e[0;37m'
 VERSION="2.9.0"
-DATE=$(date -u +%Y%m%d-%H%M)
+DATE=$(date +%Y%m%d-%H%M)
 PB_VENDOR=vendor/pb
 PB_WORK=$OUT
 PB_WORK_DIR=$OUT/zip
 RECOVERY_IMG=$OUT/recovery.img
 RECOVERY_RAM=$OUT/ramdisk-recovery.cpio
-PB_DEVICE=$(cut -d'_' -f2-3 <<<$TARGET_PRODUCT)
+export PB_DEVICE=$(cut -d'_' -f2-3 <<<$TARGET_PRODUCT)
 if [ "$PB_GO" != "true" ]; then
 	ZIP_NAME=PitchBlack-$PB_DEVICE-$VERSION-$DATE
 else
@@ -109,19 +109,21 @@ echo -e "${green}**** Compressing Files into ZIP ****${nocol}"
 cd $PB_WORK_DIR
 zip -r ${ZIP_NAME}.zip *
 BUILD_RESULT_STRING="BUILD SUCCESSFUL"
-echo -e ""
-echo -e "${blue} __________   __    __              __     ${purple} __________   __                       __     "
-echo -e "${blue} \______   \ |__| _/  |_    ____   |  |__  ${purple} \______   \ |  |   _____      ____   |  | __ "
-echo -e "${blue}  |     ___/ |  | \   __\ _/ ___\  |  |  \ ${purple}  |    |  _/ |  |   \__  \   _/ ___\  |  |/ / "
-echo -e "${blue}  |    |     |  |  |  |   \  \___  |   Y  \ ${purple} |    |   \ |  |__  / __ \_ \  \___  |    <  "
-echo -e "${blue}  |____|     |__|  |__|    \___  > |___|  /${purple}  |______  / |____/ (____  /  \___  > |__|_ \ "
-echo -e "${blue}                               \/       \/ ${purple}         \/              \/       \/       \/ "
-echo -e "${green}                     __________    "
-echo -e "                     \______   \ ____   ____  _______  __ ___________ ___.__.            "
-echo -e "                      |       _// __ \_/ ___\/  _ \  \/ // __ \_  __ <   |  |            "
-echo -e "                      |    |   \  ___/\  \__(  <_> )   /\  ___/|  | \/\___  |            "
-echo -e "                      |____|_  /\___  >\___  >____/ \_/  \___  >__|   / ____|            "
-echo -e "                             \/     \/     \/                \/       \/                 ${nocol}"
+echo
+echo -e "${red} ██████╗ ██╗████████╗ ██████╗██╗  ██╗ ${white} ██████╗ ██╗      █████╗  ██████╗██╗  ██╗ "
+echo -e "${red} ██╔══██╗██║╚══██╔══╝██╔════╝██║  ██║ ${white} ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝ "
+echo -e "${red} ██████╔╝██║   ██║   ██║     ███████║ ${white} ██████╔╝██║     ███████║██║     █████╔╝  "
+echo -e "${red} ██╔═══╝ ██║   ██║   ██║     ██╔══██║ ${white} ██╔══██╗██║     ██╔══██║██║     ██╔═██╗  "
+echo -e "${red} ██║     ██║   ██║   ╚██████╗██║  ██║ ${white} ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗ "
+echo -e "${red} ╚═╝     ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝ ${white} ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ "
+echo                                                                               
+echo -e "${cyan}     ██████╗ ███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗      "        
+echo -e "${cyan}     ██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝      "       
+echo -e "${cyan}     ██████╔╝█████╗  ██║     ██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝       "       
+echo -e "${cyan}     ██╔══██╗██╔══╝  ██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝        "        
+echo -e "${cyan}     ██║  ██║███████╗╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║         "        
+echo -e "${cyan}     ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝ ${nocol}"
+echo
 BUILD_END=$(date +"%s")
 #DIFF=$(($BUILD_END - $BUILD_START + ( ($HOURS * 60) + ($MINS * 60) + $SECS)))
 if [[ "${BUILD_RESULT_STRING}" = "BUILD SUCCESSFUL" ]]; then
@@ -133,4 +135,10 @@ echo -e "$purple*$nocol${green} RECOVERY SIZE: $( du -h ${OUT}/recovery.img | aw
 echo -e "$cyan*$nocol${green} ZIP LOCATION: ${PB_WORK}/${ZIP_NAME}.zip$nocol"
 echo -e "$purple*$nocol${green} ZIP SIZE: $( du -h ${PB_WORK}/${ZIP_NAME}.zip | awk '{print $1}' )$nocol"
 echo -e "$cyan****************************************************************************************$nocol"
+if [ "$PBRP_BUILD_TYPE" = "OFFICIAL" ]; then
+echo -e "$cyan****************************************************************************************$nocol"
+echo -e "$cyanDEPLOYING..."
+	bash ${TOP}/vendor/pb/pb_deploy.sh
+echo -e "$cyan****************************************************************************************$nocol"
+fi
 fi
