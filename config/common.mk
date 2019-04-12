@@ -27,7 +27,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
 # Additional packages
--include vendor/omni/config/packages.mk
+-include vendor/pb/config/packages.mk
 
 # Versioning
--include vendor/omni/config/version.mk
+-include vendor/pb/config/version.mk
