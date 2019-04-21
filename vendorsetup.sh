@@ -14,4 +14,7 @@
 # limitations under the License.
 #
 
-add_lunch_combo omni_emulator-userdebug
+for combo in $(curl -s https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/pb.devices)
+do
+    add_lunch_combo omni_$combo-eng
+done
