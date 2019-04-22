@@ -102,7 +102,7 @@ def get_device_url(git_data):
                     "roomservice".format(device, android_team))
 
 
-def parse_device_directory(device_url,device):
+def parse_device_directory(device_url, device):
     to_strip = "android_device"
     repo_name = device_url[device_url.index(to_strip) + len(to_strip):]
     repo_name = repo_name[:repo_name.index(device)]
@@ -237,7 +237,7 @@ def parse_device_from_folder(device):
 
 
 def parse_dependency_file(location):
-    dep_file = "ancient.dependencies"
+    dep_file = "omni.dependencies"
     dep_location = '/'.join([location, dep_file])
     if not os.path.isfile(dep_location):
         print("WARNING: %s file not found" % dep_location)
@@ -248,6 +248,31 @@ def parse_dependency_file(location):
     except ValueError:
         raise Exception("ERROR: malformed dependency file")
     return dependencies
+
+
+# if there is any conflict with existing and new
+# delete the roomservice.xml file and create new
+def check_manifest_problems(dependencies):
+    for dependency in dependencies:
+        repository = dependency.get("repository")
+        target_path = dependency.get("target_path")
+        revision = dependency.get("revision", default_rev)
+        remote = dependency.get("remote", default_rem)
+
+        # check for existing projects
+        for project in iterate_manifests(True):
+            if project.get("revision") is not None and project.get("path") is not None:
+                if project.get("path") == target_path and project.get("revision") != revision:
+                    print("WARNING: detected conflict in revisions for repository ", repository)
+                    current_dependency = str(project.get(repository))
+                    file = ES.parse('/'.join([local_manifest_dir, "roomservice.xml"]))
+                    file_root = file.getroot()
+                    for current_project in file_root.findall('project'):
+                        new_dependency = str(current_project.find('revision'))
+                        if new_dependency == current_dependency:
+                            file_root.remove(current_project)
+                    file.write('/'.join([local_manifest_dir, "roomservice.xml"]))
+                    return
 
 
 def create_dependency_manifest(dependencies):
@@ -272,7 +297,36 @@ def create_dependency_manifest(dependencies):
             write_to_manifest(manifest)
             projects.append(target_path)
     if len(projects) > 0:
-        os.system("repo sync --force-sync %s" % " ".join(projects))
+        os.system("repo sync -f --no-clone-bundle %s" % " ".join(projects))
+
+
+def create_common_dependencies_manifest(dependencies):
+    dep_file = "omni.dependencies"
+    common_list = []
+    if dependencies is not None:
+        for dependency in dependencies:
+            try:
+                index = common_list.index(dependency['target_path'])
+            except ValueError:
+                index = None
+            if index is None:
+                common_list.append(dependency['target_path'])
+                dep_location = '/'.join([dependency['target_path'], dep_file])
+                if not os.path.isfile(dep_location):
+                    sys.exit()
+                else:
+                    try:
+                        with open(dep_location, 'r') as f:
+                            common_deps = json.loads(f.read())
+                    except ValueError:
+                        raise Exception("ERROR: malformed dependency file")
+
+                    if common_deps is not None:
+                        print("Looking for dependencies on: ",
+                               dependency['target_path'])
+                        check_manifest_problems(common_deps)
+                        create_dependency_manifest(common_deps)
+                        create_common_dependencies_manifest(common_deps)
 
 
 def fetch_dependencies(device):
@@ -281,7 +335,10 @@ def fetch_dependencies(device):
         raise Exception("ERROR: could not find your device "
                         "folder location, bailing out")
     dependencies = parse_dependency_file(location)
+    check_manifest_problems(dependencies)
     create_dependency_manifest(dependencies)
+    create_common_dependencies_manifest(dependencies)
+    fetch_device(device)
 
 
 def check_device_exists(device):
@@ -296,7 +353,7 @@ def fetch_device(device):
         print("WARNING: Trying to fetch a device that's already there")
         return
     git_data = search_github_for_device(device)
-    device_url = android_team+"/"+get_device_url(git_data)
+    device_url = get_device_url(git_data)
     device_dir = parse_device_directory(device_url,device)
     project = create_manifest_project(device_url,
                                       device_dir,
