@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # new all-in-one docker image
+      - image: fr3akyphantom/pitchblack-builder:latest
+    environment:
+      MANIFEST_BRANCH: '<PBRP or other manifest branch>'
+      PBRP_BRANCH: '<android-9.0 or other bootable_recovery branch>'
+      VERSION: '<PBRP version a.k.a 2.9.0'
+      VENDOR: '<Product Vendor>'
+      CODENAME: 'Device Codename'
+      BUILD_LUNCH: '<omni_CODENAME-userdebug>'
+    working_directory: /home/builder/pitchblack
+    steps:
+      - checkout
+      - run:
+          name: AIO Build
+          command: |
+            echo "Set GitAuth Infos too"
+            git config --global user.email $GitHubMail
+            git config --global user.name $GitHubName
+            git config --global color.ui true
+            wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
+            source build.sh ${SFUserName} ${SFPassword} ${GITHUB_TOKEN}
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
