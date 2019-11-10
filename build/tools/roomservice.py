@@ -42,14 +42,11 @@ def check():
     found = ''
     datafile = file('.repo/manifests/default.xml')
     for line in datafile:
-       for i in line:
-#          print(line)
-          return i.find("android-8.1.0")
+        for i in line:
+            if (i.find("refs/tags") !=-1 ):
+                return (line[line.find('android'):line.find('_r')-2])
 
-if check():
-   default_rev = "android-8.1"
-else:
-   default_rev = "android-9.0"
+default_rev = check()
 print(default_rev)
 # set this to the remote that you use for projects from your team repos
 # example fetch="https://github.com/omnirom"
