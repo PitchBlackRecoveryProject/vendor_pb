@@ -42,8 +42,9 @@ def check():
     found = ''
     datafile = file('.repo/manifests/default.xml')
     for line in datafile:
-        for i in line:
-            if (i.find("refs/tags") !=-1 ):
+#        for i in line:
+            if line.find('refs/tags') != -1:
+#                print(line.find('refs/tags'))
                 return (line[line.find('android'):line.find('_r')-2])
 
 default_rev = check()
