@@ -180,16 +180,16 @@ def indent(elem, level=0):
             elem.tail = i
 
 
-def create_manifest_project(url, directory,
+def create_manifest_project(url, directory, override,
                             remote=default_rem,
                             revision=default_rev):
     project_exists = check_project_exists(url)
 
-    if project_exists:
+    if project_exists and override is None:
         return None
 
     dup_path = check_dup_path(directory)
-    if not dup_path is None:
+    if not dup_path is None and override is None:
             write_to_manifest(
                 append_to_manifest(
                     create_manifest_remove(dup_path)))
@@ -289,11 +289,12 @@ def check_manifest_problems(dependencies):
         target_path = dependency.get("target_path")
         revision = dependency.get("revision", default_rev)
         remote = dependency.get("remote", default_rem)
+        override = dependency.get("override", None)
 
         # check for existing projects
         for project in iterate_manifests(True):
             if project.get("revision") is not None and project.get("path") is not None:
-                if project.get("path") == target_path and project.get("revision") != revision:
+                if project.get("path") == target_path and project.get("revision") != revision and override is None:
                     print("WARNING: detected conflict in revisions for repository ", repository)
                     current_dependency = str(project.get(repository))
                     file = ES.parse('/'.join([local_manifest_dir, "roomservice.xml"]))
@@ -329,7 +330,7 @@ def create_dependency_manifest(dependencies):
             if not "/" in repository:
                 repository = '/'.join([android_team, repository])
         project = create_manifest_project(repository,
-                                          target_path,
+                                          target_path, override,
                                           remote=remote,
                                           revision=revision)
         if not project is None:
