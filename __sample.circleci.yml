@@ -23,7 +23,7 @@ jobs:
             git config --global user.name $GitHubName
             git config --global color.ui true
             wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
-            source build.sh ${SFUserName} ${SFPassword} ${GITHUB_TOKEN}
+            source build.sh
 workflows:
   version: 2
   build_and_test:
