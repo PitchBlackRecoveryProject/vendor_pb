@@ -12,6 +12,7 @@ jobs:
       CODENAME: 'Device Codename'
       BUILD_LUNCH: '<omni_CODENAME-userdebug>'
       TEST_BUILD: '<true> or keep empty or do not use at all (for official)'
+      EXTRA_CMD: '<some required commands like `ls`>'
     working_directory: /home/builder/pitchblack
     steps:
       - checkout
