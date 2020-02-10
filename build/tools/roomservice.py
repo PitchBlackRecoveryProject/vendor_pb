@@ -398,7 +398,8 @@ def fetch_device(device):
     device_dir = parse_device_directory(device_url,device)
     project = create_manifest_project(device_url,
                                       device_dir,
-                                      remote=default_team_rem)
+                                      override=None,
+                                      remote=default_team_rem, revision=default_rev)
     if not project is None:
         manifest = append_to_manifest(project)
         write_to_manifest(manifest)
