@@ -26,6 +26,12 @@ ifneq ($(TARGET_BUILD_VARIANT),eng)
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
+TW_OVERRIDE_SYSTEM_PROPS += "ro.bootimage.build.fingerprint;\
+    ro.build.fingerprint;\
+    ro.build.description;\
+    ro.vendor.build.fingerprint;\
+    ro.vendor.build.description"
+
 # Additional packages
 -include vendor/pb/config/packages.mk
 
