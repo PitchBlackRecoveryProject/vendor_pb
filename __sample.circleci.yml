@@ -1,27 +1,28 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      # new standalone docker container
       - image: fr3akyphantom/droid-builder:latest
     environment:
       MANIFEST_BRANCH: 'PBRP or other manifest branch'
-      PBRP_BRANCH: # optional, if not default 'android-9.0', define other bootable_recovery branch
-      VERSION: '2.9.0' # as of now, the current PBRP version
+      # PBRP_BRANCH: '' # optional, if not default 'android-9.0', define other bootable_recovery branch
+      VERSION: '2.9.1' # as of now, the current PBRP version
       VENDOR: 'Product Vendor or Manufacturer'
       CODENAME: 'Device Codename'
-      BUILD_LUNCH: # set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
-      TEST_BUILD: # set 'true' for testing, otherwise do not use at all (for official)
+      BUILD_LUNCH: '' # set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
+      TEST_BUILD: '' # set 'true' for testing, otherwise do not use at all (for official)
+      # PB_OFFICIAL: 'true' # Set true only for Stable Official builds
       EXTRA_CMD: # some required commands like `ls` after `repo sync`, write in single line
-    working_directory: /home/builder/pitchblack # '/home/builder/' will also work just fine
+      # PB_ENGLISH: 'true' # If you want only English Language
+    working_directory: /home/builder/pitchblack
     steps:
-      - checkout
       - run:
           name: AIO Build
           command: |
             echo "Set GitAuth Infos"
             git config --global user.email $GitHubMail
             git config --global user.name $GitHubName
+            git config --global credential.helper store
             git config --global color.ui true
             wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
             source build.sh
@@ -30,8 +31,7 @@ workflows:
   build_and_test:
     jobs:
       - build:
-        # if running CircleCI from non-default branch, add 'filters' key under 'build' key, and uncomment
-        # filters:
-        #   branches:
-        #     only: 'non-default branch name'
+          filters:
+            branches:
+              only: 'REPLACE CURRENT BRANCH NAME HERE'
           context: org-global
