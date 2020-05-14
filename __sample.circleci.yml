@@ -7,6 +7,7 @@ jobs:
       MANIFEST_BRANCH: 'PBRP or other manifest branch'
       # PBRP_BRANCH: '' # optional, if not default 'android-9.0', define other bootable_recovery branch
       VERSION: '2.9.1' # as of now, the current PBRP version
+      MAINTAINER: '@########'
       VENDOR: 'Product Vendor or Manufacturer'
       CODENAME: 'Device Codename'
       BUILD_LUNCH: '' # set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
