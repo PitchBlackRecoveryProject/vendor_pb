@@ -77,9 +77,12 @@ chmod 0755 /sbin/awk
 fi
 
 # Find Recovery Partition
-for PARTITION in android_recovery ANDROID_RECOVERY RECOVERY recovery; do
+for PARTITION in android_recovery ANDROID_RECOVERY RECOVERY recovery FOTAKernel ; do
   RECOVERY=$(readlink /dev/block/by-name/$PARTITION || readlink /dev/block/platform/*/by-name/$PARTITION || \
               readlink /dev/block/platform/*/*/by-name/$PARTITION || readlink /dev/$PARTITION);
+  if [[ -n $RECOVERY ]]; then
+    break;
+  fi
 done;
 
 #Deletion
