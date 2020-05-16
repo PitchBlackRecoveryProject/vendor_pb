@@ -3,6 +3,7 @@
 # Copyright (C) 2013 Cybojenix <anthonydking@gmail.com>
 # Copyright (C) 2013 The OmniROM Project
 # Copyright (C) 2018 dotOS Project
+# Copyright (C) 2019-2020 Pitch Black Recovery Project
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -315,6 +316,7 @@ def create_dependency_manifest(dependencies):
         revision = dependency.get("revision", default_rev)
         remote = dependency.get("remote", default_rem)
         override = dependency.get("override", None)
+        remove = dependency.get("remove", None)
 
         if override is not None:
             #print("found override in ", repository)
@@ -324,22 +326,34 @@ def create_dependency_manifest(dependencies):
                 #print(ES.tostring(manifest).decode())
                 write_to_manifest(manifest)
 
+        if remove is not None:
+            project = create_remove_project(remove)
+            if project is not None:
+                manifest = append_to_manifest(project)
+                #print(ES.tostring(manifest).decode())
+                write_to_manifest(manifest)
+
+        if remove is None:
         # not adding an organization should default to android_team
         # only apply this to github
-        if remote == "github":
-            if not "/" in repository:
-                repository = '/'.join([android_team, repository])
-        project = create_manifest_project(repository,
+            if remote == "github":
+                if not "/" in repository:
+                    repository = '/'.join([android_team, repository])
+
+            project = create_manifest_project(repository,
                                           target_path, override,
                                           remote=remote,
                                           revision=revision)
-        if not project is None:
-            manifest = append_to_manifest(project)
-            write_to_manifest(manifest)
-            projects.append(target_path)
+
+            if not project is None:
+                manifest = append_to_manifest(project)
+                write_to_manifest(manifest)
+                projects.append(target_path)
+    print ("%s" % " ".join(projects))
     if len(projects) > 0:
         os.system("repo sync -f --no-clone-bundle %s" % " ".join(projects))
-
+    if remove is not None:
+        os.system("repo sync -l -f -q")
 
 def create_common_dependencies_manifest(dependencies):
     dep_file = "omni.dependencies"
