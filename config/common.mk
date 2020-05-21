@@ -26,6 +26,8 @@ ifneq ($(TARGET_BUILD_VARIANT),eng)
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
+PRODUCT_PACKAGES += zip
+
 TW_OVERRIDE_SYSTEM_PROPS += "ro.bootimage.build.fingerprint;\
     ro.build.fingerprint;\
     ro.build.description;\
