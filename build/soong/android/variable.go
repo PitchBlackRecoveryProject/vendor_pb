@@ -15,6 +15,10 @@ type Product_variables struct {
         Target_motorized_camera struct {
                 Cflags []string
         }
+        Target_surfaceflinger_fod_lib struct {
+                Cflags []string
+                Whole_static_libs []string
+        }
 }
 
 type ProductVariables struct {
@@ -24,4 +28,5 @@ type ProductVariables struct {
 	Target_use_sdclang        *bool `json:",omitempty"`
 	Target_camera_needs_client_info         *bool `json:",omitempty"`
 	Target_motorized_camera                 *bool `json:",omitempty"`
+        Target_surfaceflinger_fod_lib            *string `json:",omitempty"`
 }

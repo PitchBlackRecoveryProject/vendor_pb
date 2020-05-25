@@ -9,6 +9,7 @@ $(call add_json_bool, Uses_metadata_as_fde_key, $(filter true,$(TARGET_USES_META
 $(call add_json_bool, Target_use_sdclang,       $(filter true,$(TARGET_USE_SDCLANG)))
 $(call add_json_bool, Target_camera_needs_client_info,        $(filter true,$(TARGET_CAMERA_NEEDS_CLIENT_INFO)))
 $(call add_json_bool, Target_motorized_camera,                $(filter true,$(TARGET_MOTORIZED_CAMERA)))
+$(call add_json_str_omitempty, Target_surfaceflinger_fod_lib, $(TARGET_SURFACEFLINGER_FOD_LIB))
 
 # This causes the build system to strip out the last comma in our nested struct, to keep the JSON valid.
 _contents := $(_contents)__SV_END
