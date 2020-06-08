@@ -15,6 +15,12 @@ jobs:
       # PB_OFFICIAL: 'true' # Set true only for Stable Official builds
       EXTRA_CMD: # some required commands like `ls` after `repo sync`, write in single line
       # PB_ENGLISH: 'true' # If you want only English Language
+      CHANGELOG: " - Update 1\n
+        - Update or Fix 2\n
+        - Update or Fix 3\n
+        - ........\n
+        - Upto N"
+
     working_directory: /home/builder/pitchblack
     steps:
       - run:
