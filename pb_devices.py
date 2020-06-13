@@ -22,13 +22,12 @@ def release_error(error_message):
 
 def verify_device(vendor, codename):
 	response = urllib.request.urlopen(url)
-	data = json.loads(response.read())
+	data = json.loads(response.read().decode('utf-8'))
 
 	if vendor in data:
 		if codename in data[vendor]:
-			return True
-		
-	return False
+			return 0
+	return 1
 
 def release(vendor, codename, build_date_time):
 	shutil.copyfile(local_file, backup_file)
@@ -56,7 +55,7 @@ if len(arguments) < 4:
 cmd = arguments[1]
 
 if cmd == 'verify':
-	print(verify_device(arguments[2], arguments[3]))
+	exit(verify_device(arguments[2], arguments[3]))
 
 elif cmd == 'release':
 	if len(arguments) < 5:
