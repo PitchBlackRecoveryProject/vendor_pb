@@ -94,8 +94,8 @@ mount_sys=
 RECOVERY=/dev/recovery
 
 tool="/tmp/pb/magiskboot"
-keycheck="$PB/../META-INF/keycheck"
-chmod 0755 "$tool"
+keycheck="/tmp/pb/META-INF/keycheck"
+chmod 0755 "$tool" "$keycheck"
 
 if [ ! -f "/sbin/awk" ]; then
 	cp META-INF/awk /sbin/awk
@@ -233,12 +233,6 @@ ui_print "|                                             |"
 ui_print "|==>>>----         Thank You         ----<<<==|"
 ui_print "|              -----------------              |"
 ui_print "|                                             |"
-
-if [ ! -f "/sbin/keycheck" ]; then
-	ui_print "|  Reboot into PitchBlack Recovery, Manually  |"
-fi
-
-ui_print "|                                             |"
 ui_print "|---------   Installation finished!   --------|"
 ui_print "|---------------------------------------------|"
 ui_print "|                                             |"
@@ -253,15 +247,24 @@ else
 	rm -rf /s
 fi
 
+ui_print "|=>   New PitchBlack Recovery is Flashed,   <=|"
+ui_print "|                                             |"
+ui_print "|   Press Volume Down to Reboot to Recovery   |"
+ui_print "|        Or Press Volume Up to Finish.        |"
+ui_print "|                                             |"
 if [ ! -f "/sbin/keycheck" ]; then
-	ui_print "|=>   New PitchBlack Recovery is Flashed,   <=|"
-	ui_print "|                                             |"
-	ui_print "|   Press Volume Down to Reboot to Recovery   |"
-	ui_print "|        Or Press Volume Up to Finish.        |"
-	ui_print "|                                             |"
-	chmod +x $keycheck
-	$keycheck
+	"$keycheck"
 	if [ "$?" = "41" ]; then
+		ui_print "|=>   Rebooting to Newly Flashed Recovery   <=|"
+		ui_print " "
+		sleep 2s
+		reboot recovery
+	fi
+else
+	/sbin/keycheck
+	if [ "$?" = "41" ]; then
+		ui_print "|=>   Rebooting to Newly Flashed Recovery   <=|"
+		ui_print " "
 		sleep 2s
 		reboot recovery
 	fi
