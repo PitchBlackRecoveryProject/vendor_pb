@@ -2,35 +2,34 @@ version: 2.1
 jobs:
   build:
     docker:
+      # Use tags "latest or bionic" for Ubuntu 18.04.4 LTS
+      # Use tags "edge or focal" for Ubuntu 20.04 LTS"
       - image: fr3akyphantom/droid-builder:latest
     environment:
-      MANIFEST_BRANCH: 'PBRP or other manifest branch'
-      # PBRP_BRANCH: '' # optional, if not default 'android-9.0', define other bootable_recovery branch
+      MANIFEST_BRANCH: '' # REQUIRED:: Put as 'android-X.Y' format as-in "manifest_pb" repository
+      # PBRP_BRANCH: '' # OPTIONAL:: If not default 'android-9.0', define other bootable_recovery branch
       VERSION: '2.9.1' # as of now, the current PBRP version
-      MAINTAINER: '@########'
-      VENDOR: 'Product Vendor or Manufacturer'
-      CODENAME: 'Device Codename'
-      BUILD_LUNCH: '' # set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
-      TEST_BUILD: '' # set 'true' for testing, otherwise do not use at all (for official)
-      # PB_OFFICIAL: 'true' # Set true only for Stable Official builds
-      EXTRA_CMD: # some required commands like `ls` after `repo sync`, write in single line
-      # PB_ENGLISH: 'true' # If you want only English Language
-      CHANGELOG: " - Update 1\n
-        - Update or Fix 2\n
-        - Update or Fix 3\n
-        - ........\n
-        - Upto N"
-
+      MAINTAINER: '@########' # REQUIRED:: Replace your Telegram ID, if unavailable then use GitHub Username
+      VENDOR: '' # REQUIRED:: Input Product Vendor or Manufacturer
+      CODENAME: '' # REQUIRED:: Input Device Codename
+      FLAVOR: '' # REQUIRED:: Input 'eng' or 'userdebug'
+      # BUILD_LUNCH: '' # DEPRICATED:: set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
+      TEST_BUILD: 'true' # OPTIONAL:: Use for Testing Purpose, Comment-out/delete for Official build
+      # PB_OFFICIAL: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Stable Official builds
+      # EXTRA_CMD: "" # OPTIONAL:: USE DOUBLE-QUOTE: If you need to modify or patch a few things with commands after `repo sync`, write in single line separated by semicolon ';' if needed
+      # PB_ENGLISH: 'true' # OPTIONAL:: If you want only English Language
+      CHANGELOG: | # Write anything under the pipe '|' character keeping the 2-character-space, no quote required
+        What's been done?
+        - Update done for xx
+        What's fixed?
+        - Fixed yy things
+          - Which is actually Changed by ZZ
+        And something else
     working_directory: /home/builder/pitchblack
     steps:
       - run:
           name: AIO Build
           command: |
-            echo "Set GitAuth Infos"
-            git config --global user.email $GitHubMail
-            git config --global user.name $GitHubName
-            git config --global credential.helper store
-            git config --global color.ui true
             wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
             source build.sh
 workflows:
@@ -40,5 +39,6 @@ workflows:
       - build:
           filters:
             branches:
-              only: 'REPLACE CURRENT BRANCH NAME HERE'
-          context: org-global
+              only: 'REPLACE CURRENT BRANCH NAME WITHIN QUOTE'
+          context: org-global ## ONLY FOR TEAM DEVELPERS
+          ## If you are not in Team, then you have to add $GitHubMail, $GitHubName and $GITHUB_TOKEN in the environment variables

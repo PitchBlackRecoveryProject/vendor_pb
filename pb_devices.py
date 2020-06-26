@@ -21,11 +21,42 @@ def release_error(error_message):
 
 def verify_device(vendor, codename):
 	response = urllib.request.urlopen(url)
-	data = json.loads(response.read().decode('utf-8'))
 
-	if vendor in data:
-		if codename in data[vendor]:
+	data = json.loads(response.read().decode('utf-8'))
+	ven = data.keys()
+	if vendor != "all":
+		for i in ven:
+			if i.casefold() == vendor.casefold():
+				ven = i
+				break
+		if not ven:
+			return 1
+
+		cod = data[ven]
+
+		for i in cod:
+			if i.casefold() == codename.casefold():
+				cod = i
+				break
+		if not cod or isinstance(cod, str) is False:
+			return 1
+
+		if codename.casefold() == cod.casefold():
 			return 0
+	else:
+		cod = ""
+		for i in ven:
+			cod = json.loads(json.dumps(data[i])).keys()
+
+			for j in cod:
+				if j.casefold() == codename.casefold():
+					cod = j
+					break
+			if not cod:
+				return 1
+
+			if codename.casefold() == j.casefold():
+				return 0
 	return 1
 
 def release(vendor, codename, build_date_time):
@@ -34,13 +65,27 @@ def release(vendor, codename, build_date_time):
 	with open(backup_file, 'r') as f:
 	  data = json.load(f)
 
-	if vendor in data:
-		if codename in data[vendor]:
-			data[vendor][codename]['latest_release'] = build_date_time
-		else:
-	  		release_error('Device not Official')
+	ven = data.keys()
+	for i in ven:
+		if i.casefold() == vendor.casefold():
+			ven = i
+			break
+	if not ven:
+		return 1
+
+	cod = data[ven]
+
+	for i in cod:
+		if i.casefold() == codename.casefold():
+			cod = i
+			break
+	if not cod or isinstance(cod, str) is False:
+		return 1
+
+	if codename.casefold() == cod.casefold():
+		data[ven][cod]['latest_release'] = build_date_time
 	else:
-		release_error('Device not Official')
+  		release_error('Device not Official')
 
 	with open(local_file, 'w') as f:
 	  json.dump(data, f, indent=2)
@@ -52,6 +97,8 @@ if len(arguments) < 4:
 	invalid_arguments()
 
 cmd = arguments[1]
+print("PB_DEVICES: Detected Codename: ", arguments[3])
+print("PB_DEVICES: Detected Vendor: ", arguments[2])
 
 if cmd == 'verify':
 	exit(verify_device(arguments[2], arguments[3]))
@@ -63,5 +110,3 @@ elif cmd == 'release':
 	release(arguments[2], arguments[3], arguments[4])
 else:
 	invalid_arguments()
-
-
