@@ -27,7 +27,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
 CODE := $(shell echo $(TARGET_PRODUCT) | cut -d'_' -f2-5)
-MAINTAINER := $(shell python3 vendor/pb/pb_devices.py verify $(TARGET_VENDOR) $(CODE) true)
+MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(TARGET_VENDOR) $(CODE) true)
 
 PRODUCT_PACKAGES += \
     zip \
