@@ -65,7 +65,7 @@ def check_repo_exists(git_data):
 
 # Note that this can only be done 5 times per minute
 def search_github_for_device(device):
-    git_device = '+'.join(re.findall('[a-z]+|[\d]+',  device))
+    git_device = "+".join(re.findall('[A-Za-z]+|[\d]+',  device))
     git_search_url = "https://api.github.com/search/repositories" \
                      "?q=%40{}+android_device+{}+fork:true".format(android_team, git_device)
     git_req = urllib.request.Request(git_search_url)
