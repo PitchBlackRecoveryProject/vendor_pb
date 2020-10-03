@@ -37,7 +37,14 @@ TW_OVERRIDE_SYSTEM_PROPS += "ro.bootimage.build.fingerprint;\
     ro.build.fingerprint;\
     ro.build.description;\
     ro.vendor.build.fingerprint;\
-    ro.vendor.build.description"
+    ro.system.build.date;\
+    ro.system.build.date.utc;\
+    ro.system.build.version.incremental;\
+    ro.system.build.fingerprint;\
+    ro.build.ab_update;\
+    ro.build.version.sdk;\
+    ro.build.date;\
+    ro.build.date.utc"
 
 # Additional packages
 -include vendor/pb/config/packages.mk
