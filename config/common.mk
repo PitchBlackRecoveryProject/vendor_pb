@@ -26,8 +26,8 @@ ifneq ($(TARGET_BUILD_VARIANT),eng)
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
-CODE := $(shell echo $(TARGET_PRODUCT) | cut -d'_' -f2-5)
-MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(TARGET_VENDOR) $(CODE) true)
+CODE := $(PB_CODE)
+MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(PB_VENDOR_CODE) $(CODE) true)
 
 PRODUCT_PACKAGES += \
     zip \
