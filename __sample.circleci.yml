@@ -15,6 +15,7 @@ jobs:
       FLAVOR: '' # REQUIRED:: Input 'eng' or 'userdebug'
       # BUILD_LUNCH: '' # DEPRICATED:: set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
       TEST_BUILD: 'true' # OPTIONAL:: Use for Testing Purpose, Comment-out/delete for Official build
+      # BETA_BUILD: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Beta Official builds
       # PB_OFFICIAL: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Stable Official builds
       # EXTRA_CMD: "" # OPTIONAL:: USE DOUBLE-QUOTE: If you need to modify or patch a few things with commands after `repo sync`, write in single line separated by semicolon ';' if needed
       # PB_ENGLISH: 'true' # OPTIONAL:: If you want only English Language
@@ -30,7 +31,7 @@ jobs:
       - run:
           name: AIO Build
           command: |
-            wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
+            wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_utils/pb/build.sh
             source build.sh
 workflows:
   version: 2
