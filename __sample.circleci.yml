@@ -15,6 +15,7 @@ jobs:
       FLAVOR: '' # REQUIRED:: Input 'eng' or 'userdebug'
       # BUILD_LUNCH: '' # DEPRICATED:: set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
       TEST_BUILD: 'true' # OPTIONAL:: Use for Testing Purpose, Comment-out/delete for Official build
+      # BETA_BUILD: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Beta Official builds
       # PB_OFFICIAL: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Stable Official builds
       # EXTRA_CMD: "" # OPTIONAL:: USE DOUBLE-QUOTE: If you need to modify or patch a few things with commands after `repo sync`, write in single line separated by semicolon ';' if needed
       # PB_ENGLISH: 'true' # OPTIONAL:: If you want only English Language
@@ -27,10 +28,12 @@ jobs:
         And something else
     working_directory: /home/builder/pitchblack
     steps:
+      - setup_remote_docker:
+          version: 19.03.8
       - run:
-          name: AIO Build
+          name: "ALL IN REMOTE"
           command: |
-            wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
+            curl -sL https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_utils/pb/remote_build.sh -o build.sh
             source build.sh
 workflows:
   version: 2
@@ -42,3 +45,4 @@ workflows:
               only: 'REPLACE CURRENT BRANCH NAME WITHIN QUOTE'
           context: org-global ## ONLY FOR TEAM DEVELPERS
           ## If you are not in Team, then you have to add $GitHubMail, $GitHubName and $GITHUB_TOKEN in the environment variables
+          ## Please Don't Build In PitchBlackRecoveryProject Org It Takes Sooo Muchh Credits. Use It Personal Repo for testing
