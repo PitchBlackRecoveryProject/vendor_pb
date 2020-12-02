@@ -1,25 +1,42 @@
 version: 2.1
+# It's time we use Real CI Config v2.1
+executors:
+  worker:
+    docker:
+      - image: fr3akyphantom/droid-builder:latest
+        # Use tags "latest or bionic" for Ubuntu 18.04.4 LTS
+        # Use tags "edge or focal" for Ubuntu 20.04 LTS"
+        auth:
+          # This is Required from now on
+          username: "$DOCKERHUB_USERNAME"
+          password: "$DOCKERHUB_PASSWORD"
+# Read carefully, and remove unnecessary key-value pair & these comments before pushing
 jobs:
   build:
-    docker:
-      # Use tags "latest or bionic" for Ubuntu 18.04.4 LTS
-      # Use tags "edge or focal" for Ubuntu 20.04 LTS"
-      - image: fr3akyphantom/droid-builder:latest
+    executor: worker
     environment:
-      MANIFEST_BRANCH: '' # REQUIRED:: Put as 'android-X.Y' format as-in "manifest_pb" repository
-      # PBRP_BRANCH: '' # OPTIONAL:: If not default 'android-9.0', define other bootable_recovery branch
-      VERSION: '2.9.1' # as of now, the current PBRP version
-      MAINTAINER: '@########' # REQUIRED:: Replace your Telegram ID, if unavailable then use GitHub Username
-      VENDOR: '' # REQUIRED:: Input Product Vendor or Manufacturer
-      CODENAME: '' # REQUIRED:: Input Device Codename
-      FLAVOR: '' # REQUIRED:: Input 'eng' or 'userdebug'
-      # BUILD_LUNCH: '' # DEPRICATED:: set like 'omni_$CODENAME-userdebug' or 'omni_$CODENAME-eng'
-      TEST_BUILD: 'true' # OPTIONAL:: Use for Testing Purpose, Comment-out/delete for Official build
-      # BETA_BUILD: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Beta Official builds
-      # PB_OFFICIAL: 'true' # REQUIRED-FOR-TEAM:: Uncomment only for Stable Official builds
-      # EXTRA_CMD: "" # OPTIONAL:: USE DOUBLE-QUOTE: If you need to modify or patch a few things with commands after `repo sync`, write in single line separated by semicolon ';' if needed
-      # PB_ENGLISH: 'true' # OPTIONAL:: If you want only English Language
-      CHANGELOG: | # Write anything under the pipe '|' character keeping the 2-character-space, no quote required
+      # --- {{ These below 4 variables are Prime Requirement because build will not start if any of them are unset or absent }} ---
+      MANIFEST_BRANCH: "" # Put as 'android-X.Y' format as-in "manifest_pb" repository
+      VENDOR: "" # Input Product Vendor or Manufacturer
+      CODENAME: "" # Rnput Device Codename
+      FLAVOR: "" # Input "eng" or "userdebug", `BUILD_LUNCH` variable key is DEPRICATED
+      # --- {{ This variable to change bootable branch is OPTIONAL }} ---
+      PBRP_BRANCH: "" # If not default "android-9.0", define other bootable_recovery branch
+      # ---------------------------------\
+      VERSION: "3.0.0" # {{ DEPRICATED }} The current PBRP version, you might wanna avoid using it because it is dynamically fetched by build system
+      # ---------------------------------/
+      # --- {{ REQUIRED:: any one key: Use only one of the 3 variables specifying your build type }} ---
+      TEST_BUILD: true   # For Dev/Test Builds Only
+      BETA_BUILD: true   # For Beta Release Builds Only
+      PB_OFFICIAL: true  # For Official Organisation Builds
+      # --- {{ OPTIONAL: Wanna extend the build script? Wanna add some commands just before lunch? }} ---
+      EXTRA_CMD: "" # Whatever commands you wanna run inside working directory
+      # --- {{ OPTIONAL: Wanna truncate all other languages except English? }} ---
+      PB_ENGLISH: true # If you want only English Language
+      # --- {{ REQUIRED: Only for Device Maintainers who want to get notified about the build in Telegram Maintainers' Group }} ---
+      MAINTAINER: "@########" # Replace your Telegram ID, if unavailable then use GitHub User URI
+      # --- {{ OPTIONAL: Wanna add some fancy/informative Changelog while publishing your Build? }} ---
+      CHANGELOG: |
         What's been done?
         - Update done for xx
         What's fixed?
@@ -40,6 +57,6 @@ workflows:
       - build:
           filters:
             branches:
-              only: 'REPLACE CURRENT BRANCH NAME WITHIN QUOTE'
+              only: "REPLACE CURRENT BRANCH NAME WITHIN QUOTE"
           context: org-global ## ONLY FOR TEAM DEVELPERS
           ## If you are not in Team, then you have to add $GitHubMail, $GitHubName and $GITHUB_TOKEN in the environment variables
