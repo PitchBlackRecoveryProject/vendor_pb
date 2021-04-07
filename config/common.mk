@@ -51,3 +51,7 @@ TW_OVERRIDE_SYSTEM_PROPS += "ro.bootimage.build.fingerprint;\
 
 # Versioning
 -include vendor/pb/config/version.mk
+
+# More song
+include vendor/pb/build/soong/makevars.mk
+
