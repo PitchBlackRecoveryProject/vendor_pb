@@ -55,3 +55,5 @@ TW_OVERRIDE_SYSTEM_PROPS += "ro.bootimage.build.fingerprint;\
 # More song
 include vendor/pb/build/soong/makevars.mk
 
+ALLOW_MISSING_DEPENDENCIES := true
+SOONG_ALLOW_MISSING_DEPENDENCIES := true
