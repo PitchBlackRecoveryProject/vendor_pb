@@ -27,7 +27,8 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
 endif
 
 CODE := $(PB_CODE)
-MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(PB_VENDOR_CODE) $(CODE) true)
+MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(TARGET_VENDOR) $(CODE) true)
+TW_THEME := portrait_hdpi
 
 PRODUCT_PACKAGES += \
     zip \
@@ -57,3 +58,4 @@ include vendor/pb/build/soong/makevars.mk
 
 ALLOW_MISSING_DEPENDENCIES := true
 SOONG_ALLOW_MISSING_DEPENDENCIES := true
+include vendor/pb/soong/makevars.mk
