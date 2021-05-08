@@ -22,3 +22,10 @@ define addVar
 endef
 
 $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call addVar,$(v))))
+
+SOONG_CONFIG_NAMESPACES += pbrpGlobalVars
+SOONG_CONFIG_pbrpGlobalVars += \
+    target_enforce_ab_ota_partition_list
+
+# Soong bool variables
+SOONG_CONFIG_pbrpGlobalVars_target_enforce_ab_ota_partition_list := $(TARGET_ENFORCE_AB_OTA_PARTITION_LIST)
