@@ -162,3 +162,8 @@ if [ -d $(gettop)/vendor/qcom/sdclang ]; then
 -Wno-deprecated-register -Wno-tautological-type-limit-compare -Wno-sign-compare -Wno-gnu-folding-constant \
 -mllvm -arm-implicit-it=always -Wno-inline-asm -Wno-unused-command-line-argument -Wno-unused-variable"
 fi
+
+# Empty the vts makefile
+if [ -s $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk ]; then
+	echo -n "" > $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk
+fi
