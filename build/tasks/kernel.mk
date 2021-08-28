@@ -84,7 +84,7 @@ KERNEL_CONFIG := $(KERNEL_OUT)/.config
 KERNEL_RELEASE := $(KERNEL_OUT)/include/config/kernel.release
 
 ifneq (,$(findstring gki,$(KERNEL_DEFCONFIG)))
-    ifeq ($(shell [ -d $(KERNEL_SRC)/scripts/gki" ] && \
+    ifeq ($(shell \[ -d $(KERNEL_SRC)/scripts/gki ] && \
         [ "$(KERNEL_DEFCONFIG)" != "gki_defconfig" ] && \
         echo "true"), true)
         # Generate the defconfig file from the fragments
@@ -196,6 +196,10 @@ ifeq ($(NEED_KERNEL_MODULE_ROOT),true)
 KERNEL_MODULES_OUT := $(TARGET_ROOT_OUT)
 KERNEL_DEPMOD_STAGING_DIR := $(KERNEL_BUILD_OUT_PREFIX)$(call intermediates-dir-for,PACKAGING,depmod_recovery)
 KERNEL_MODULE_MOUNTPOINT :=
+else ifeq ($(NEED_KERNEL_MODULE_RECOVERY),true)
+KERNEL_MODULES_OUT := $(TARGET_RECOVERY_ROOT_OUT)/vendor/
+KERNEL_DEPMOD_STAGING_DIR := $(KERNEL_BUILD_OUT_PREFIX)$(call intermediates-dir-for,PACKAGING,depmod_recovery)
+KERNEL_MODULE_MOUNTPOINT := vendor
 else ifeq ($(NEED_KERNEL_MODULE_SYSTEM),true)
 KERNEL_MODULES_OUT := $(TARGET_OUT)
 KERNEL_DEPMOD_STAGING_DIR := $(KERNEL_BUILD_OUT_PREFIX)$(call intermediates-dir-for,PACKAGING,depmod_system)
