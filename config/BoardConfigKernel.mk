@@ -20,6 +20,9 @@
 #
 #   TARGET_KERNEL_SOURCE               = Kernel source dir, optional, defaults
 #                                          to kernel/$(TARGET_DEVICE_DIR)
+#   TARGET_KERNEL_HEADERS_SOURCE       = Kernel headers dir, in order to generate kernel
+#                                          includes for prebuilt kernels, optional, defaults
+#                                          to TARGET_KERNEL_SOURCE
 #   TARGET_KERNEL_ADDITIONAL_FLAGS     = Additional make flags, optional
 #   TARGET_KERNEL_ARCH                 = Kernel Arch
 #   TARGET_KERNEL_CROSS_COMPILE_PREFIX = Compiler prefix (e.g. arm-eabi-)
@@ -41,6 +44,10 @@ BUILD_TOP := $(shell pwd)
 
 TARGET_AUTO_KDIR := $(shell echo $(TARGET_DEVICE_DIR) | sed -e 's/^device/kernel/g')
 TARGET_KERNEL_SOURCE ?= $(TARGET_AUTO_KDIR)
+
+ifneq ($(TARGET_KERNEL_SOURCE),)
+TARGET_KERNEL_HEADERS_SOURCE := $(TARGET_KERNEL_SOURCE)
+endif
 
 TARGET_KERNEL_ARCH := $(strip $(TARGET_KERNEL_ARCH))
 ifeq ($(TARGET_KERNEL_ARCH),)
