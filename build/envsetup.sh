@@ -167,3 +167,12 @@ fi
 if [ -s $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk ]; then
 	echo -n "" > $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk
 fi
+if [ -s $(gettop)/frameworks/base/core/xsd/vts/Android.mk ]; then
+	echo -n "" > $(gettop)/frameworks/base/core/xsd/vts/Android.mk
+fi
+if [ -s $(gettop)/system/libvintf/xsd/compatibilityMatrix/vts/Android.mk ]; then
+	echo -n "" > $(gettop)/system/libvintf/xsd/compatibilityMatrix/vts/Android.mk
+fi
+if [ -s $(gettop)/system/libvintf/xsd/halManifest/vts/Android.mk ]; then
+	echo -n "" > $(gettop)/system/libvintf/xsd/halManifest/vts/Android.mk
+fi
