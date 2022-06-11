@@ -27,11 +27,15 @@ SOONG_CONFIG_NAMESPACES += pbrpGlobalVars
 SOONG_CONFIG_pbrpGlobalVars += \
     target_enforce_ab_ota_partition_list \
     target_init_vendor_lib \
-    legacy_hw_disk_encryption
+    legacy_hw_disk_encryption \
+    supports_hw_fde \
+    supports_hw_fde_perf
 
 # Soong bool variables
 SOONG_CONFIG_pbrpGlobalVars_target_enforce_ab_ota_partition_list := $(TARGET_ENFORCE_AB_OTA_PARTITION_LIST)
 SOONG_CONFIG_pbrpGlobalVars_legacy_hw_disk_encryption := $(TARGET_LEGACY_HW_DISK_ENCRYPTION)
+SOONG_CONFIG_pbrpGlobalVars_supports_hw_fde := $(TARGET_HW_DISK_ENCRYPTION)
+SOONG_CONFIG_pbrpGlobalVars_supports_hw_fde_perf := $(TARGET_HW_DISK_ENCRYPTION_PERF)
 
 # Set default values
 TARGET_INIT_VENDOR_LIB ?= vendor_init
