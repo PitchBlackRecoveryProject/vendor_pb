@@ -5,6 +5,7 @@ Additional OmniROM functions:
                    devices we support.
 - brunch:          Sets up build environment using breakfast(),
                    and then comiles using mka() against cookies target.
+- cout:            Changes directory to out.
 - mka:             Builds using SCHED_BATCH on all processors.
 - pushboot:        Push a file from your OUT dir to your phone and
                    reboots it, using absolute path.
@@ -58,6 +59,15 @@ function breakfast()
 }
 
 alias bib=breakfast
+
+function cout()
+{
+    if [  "$OUT" ]; then
+        cd $OUT
+    else
+        echo "Couldn't locate out directory.  Try setting OUT."
+    fi
+}
 
 function fixup_common_out_dir() {
     common_out_dir=$(get_build_var OUT_DIR)/target/common
