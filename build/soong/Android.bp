@@ -82,7 +82,7 @@ enforce_ab_ota_partition_list {
 soong_config_module_type {
     name: "legacy_hw_disk_encryption",
     module_type: "cc_defaults",
-    config_namespace: "lineageQcomVars",
+    config_namespace: "pbrpGlobalVars",
     bool_variables: ["legacy_hw_disk_encryption"],
     properties: ["cppflags"],
 }
