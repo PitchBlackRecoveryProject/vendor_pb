@@ -3,26 +3,12 @@ cat <<EOF
 Additional OmniROM functions:
 - breakfast:       Setup the build environment, but only list
                    devices we support.
-- brunch:          Sets up build environment using breakfast(),
-                   and then comiles using mka() against cookies target.
 - cout:            Changes directory to out.
 - mka:             Builds using SCHED_BATCH on all processors.
 - pushboot:        Push a file from your OUT dir to your phone and
                    reboots it, using absolute path.
 - repopick:        Utility to fetch changes from Gerrit.
 EOF
-}
-
-function brunch()
-{
-    breakfast $*
-    if [ $? -eq 0 ]; then
-        time mka cookies
-    else
-        echo "No such item in brunch menu. Try 'breakfast'"
-        return 1
-    fi
-    return $?
 }
 
 function breakfast()
@@ -53,6 +39,9 @@ function breakfast()
                 variant="eng"
             fi
             lunch omni_$target-$variant
+            [ ! $? -eq 0 ] && lunch twrp_$target-$variant && return $?
+            [ ! $? -eq 0 ] && lunch aosp_$target-$variant && return $?
+            [ ! $? -eq 0 ] && echo "None of the variant found (omni | twrp | aosp)"
         fi
     fi
     return $?

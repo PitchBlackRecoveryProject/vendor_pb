@@ -48,7 +48,7 @@ def check():
                 return (line[line.find('android'):line.find('_r')-2])
 
 default_rev = check()
-print(default_rev)
+dep_file = "omni.dependenies"
 # set this to the remote that you use for projects from your team repos
 # example fetch="https://github.com/omnirom"
 default_team_rem = "PitchBlackRecoveryProject"
@@ -270,7 +270,6 @@ def parse_device_from_folder(device):
 
 
 def parse_dependency_file(location):
-    dep_file = "omni.dependencies"
     dep_location = '/'.join([location, dep_file])
     if not os.path.isfile(dep_location):
         print("WARNING: %s file not found" % dep_location)
@@ -344,7 +343,6 @@ def create_dependency_manifest(dependencies):
 
 
 def create_common_dependencies_manifest(dependencies):
-    dep_file = "omni.dependencies"
     common_list = []
     if dependencies is not None:
         for dependency in dependencies:
@@ -416,6 +414,8 @@ if __name__ == '__main__':
     product = sys.argv[1]
     try:
         device = product[product.index("_") + 1:]
+        dep = product[:product.index("_")]
+        dep_file = "{}.dependencies".format(dep)
     except ValueError:
         device = product
 
