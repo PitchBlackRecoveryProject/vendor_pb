@@ -334,7 +334,7 @@ bool EnsurePolicy(const EncryptionPolicy& policy, const std::string& directory) 
     // FS_IOC_SET_ENCRYPTION_POLICY will set the policy if the directory is
     // unencrypted; otherwise it will verify that the existing policy matches.
     // Setting the policy will fail if the directory is already nonempty.
-    if (ioctl(fd, FS_IOC_SET_ENCRYPTION_POLICY, &kern_policy) != 0) {
+    if (!already_encrypted && ioctl(fd, FS_IOC_SET_ENCRYPTION_POLICY, &kern_policy) != 0) {
         std::string reason;
         switch (errno) {
             case EEXIST:
