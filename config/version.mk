@@ -5,7 +5,7 @@ ifndef ROM_BUILDTYPE
 endif
 
 TARGET_PRODUCT_SHORT := $(TARGET_PRODUCT)
-TARGET_PRODUCT_SHORT := $(subst omni_,,$(TARGET_PRODUCT_SHORT))
+TARGET_PRODUCT_SHORT := $(subst pb_,,$(TARGET_PRODUCT_SHORT))
 
 # Build the final version string
 ifdef BUILDTYPE_RELEASE
@@ -20,9 +20,9 @@ endif
 
 # Apply it to build.prop
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.modversion=OmniROM-$(ROM_VERSION) \
-    ro.omni.version=$(ROM_VERSION)
+    ro.modversion=PB-$(ROM_VERSION) \
+    ro.pb.version=$(ROM_VERSION)
 
-ROM_FINGERPRINT := OmniROM/$(PLATFORM_VERSION)/$(TARGET_PRODUCT_SHORT)/$(shell date +%Y%m%d.%H:%M)
+ROM_FINGERPRINT := PB/$(PLATFORM_VERSION)/$(TARGET_PRODUCT_SHORT)/$(shell date +%Y%m%d.%H:%M)
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.omni.fingerprint=$(ROM_FINGERPRINT)
+    ro.pb.fingerprint=$(ROM_FINGERPRINT)

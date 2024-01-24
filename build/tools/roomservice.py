@@ -48,9 +48,9 @@ def check():
                 return (line[line.find('android'):line.find('_r')-2])
 
 default_rev = check()
-dep_file = "omni.dependenies"
+dep_file = "pb.dependenies"
 # set this to the remote that you use for projects from your team repos
-# example fetch="https://github.com/omnirom"
+# example fetch="https://github.com/PitchBlackRecoveryProject"
 default_team_rem = "PitchBlackRecoveryProject"
 # this shouldn't change unless google makes changes
 local_manifest_dir = ".repo/local_manifests"

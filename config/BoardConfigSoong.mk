@@ -36,13 +36,13 @@ EXPORT_TO_SOONG := \
 # Documentation here:
 # https://github.com/LineageOS/android_build_soong/commit/8328367c44085b948c003116c0ed74a047237a69
 
-SOONG_CONFIG_NAMESPACES += omniromVarsPlugin
+SOONG_CONFIG_NAMESPACES += pbVarsPlugin
 
-SOONG_CONFIG_omniromVarsPlugin :=
+SOONG_CONFIG_pbVarsPlugin :=
 
 define addVar
-  SOONG_CONFIG_omniromVarsPlugin += $(1)
-  SOONG_CONFIG_omniromVarsPlugin_$(1) := $$(subst ",\",$$($1))
+  SOONG_CONFIG_pbVarsPlugin += $(1)
+  SOONG_CONFIG_pbVarsPlugin_$(1) := $$(subst ",\",$$($1))
 endef
 
 $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call addVar,$(v))))

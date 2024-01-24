@@ -1,6 +1,6 @@
-function __print_omni_functions_help() {
+function __print_pb_functions_help() {
 cat <<EOF
-Additional OmniROM functions:
+Additional PBRP functions:
 - breakfast:       Setup the build environment, but only list
                    devices we support.
 - cout:            Changes directory to out.
@@ -34,14 +34,16 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the omni model name
+            # This is probably just the pb model name
             if [ -z "$variant" ]; then
                 variant="eng"
             fi
-            lunch omni_$target-$variant
+            lunch pb_$target-$variant
             [ ! $? -eq 0 ] && lunch twrp_$target-$variant && return $?
             [ ! $? -eq 0 ] && lunch aosp_$target-$variant && return $?
-            [ ! $? -eq 0 ] && echo "None of the variant found (omni | twrp | aosp)"
+            [ ! $? -eq 0 ] && lunch pbrp_$target-$variant && return $?
+            [ ! $? -eq 0 ] && lunch pb_$target-$variant && return $?
+            [ ! $? -eq 0 ] && echo "None of the variant found (omni | twrp | aosp | pbrp | pb)"
         fi
     fi
     return $?

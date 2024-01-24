@@ -1,6 +1,6 @@
 bootstrap_go_package {
-    name: "soong-omnirom",
-    pkgPath: "omnirom/soong/android",
+    name: "soong-pb",
+    pkgPath: "pb/soong/android",
     srcs: [
         "android/variable.go",
     ],
