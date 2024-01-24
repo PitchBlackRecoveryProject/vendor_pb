@@ -28,7 +28,9 @@ EXPORT_TO_SOONG := \
     TW_STATUS_ICONS_ALIGN \
     TW_CUSTOM_BATTERY_POS \
     TW_CUSTOM_CLOCK_POS \
-    TW_CUSTOM_CPU_POS
+    TW_CUSTOM_CPU_POS \
+    PB_TORCH_PATH \
+    PB_TORCH_MAX_BRIGHTNESS
 
 # Setup SOONG_CONFIG_* vars to export the vars listed above.
 # Documentation here:
