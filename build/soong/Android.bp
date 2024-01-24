@@ -263,7 +263,7 @@ pbrp {
             cflags: ["-DTWRP_EVENT_LOGGING"]
         },
         target_recovery_overscan_percent: {
-            cflags: ["-DOVERSCAN_PERCENT"]
+            cflags: ["-DOVERSCAN_PERCENT=%s"]
         },
         tw_screen_blank_on_boot: {
             cflags: ["-DTW_SCREEN_BLANK_ON_BOOT"]
