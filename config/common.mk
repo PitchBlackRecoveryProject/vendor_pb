@@ -25,6 +25,10 @@ CODE := $(PB_CODE)
 MAINTAINER := $(shell python3 vendor/utils/pb_devices.py verify $(TARGET_VENDOR) $(CODE) true)
 TW_THEME := portrait_hdpi
 
+# PBRP specific build flags
+PB_DISABLE_DEFAULT_DM_VERITY := true
+PB_DISABLE_DEFAULT_TREBLE_COMP := true
+
 PRODUCT_PACKAGES += \
     zip \
     keycheck
